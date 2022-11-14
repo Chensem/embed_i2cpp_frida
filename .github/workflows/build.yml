@@ -120,6 +120,7 @@ jobs:
         export ANDROID_NDK_ROOT=${{ steps.setup-ndk.outputs.ndk-path }}
         git clone --recurse-submodules https://github.com/frida/frida
         cd frida
+        ls ../
         git apply ../embed_il2cpp_frida/Patches/main.patch
         cd frida-gum
         git apply ../../embed_il2cpp_frida/Patches/frida-gum.patch
