@@ -1,4 +1,4 @@
-name: strongR-frida
+name: embed-il2cpp-frida
 
 on:
   schedule:
@@ -120,7 +120,7 @@ jobs:
         export ANDROID_NDK_ROOT=${{ steps.setup-ndk.outputs.ndk-path }}
         git clone --recurse-submodules https://github.com/frida/frida
         cd frida/frida-core
-        git am ../../Patchs/strongR-frida/frida-core/*.patch
+        git am ../../Patchs/*.patch
         cd ../
         make core-android-arm
         make core-android-arm64
@@ -176,7 +176,7 @@ jobs:
         
         popd
         
-    - name: Upload android arm frida-server for strongR-frida
+    - name: Upload android arm frida-server for embed-il2cpp-frida
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -186,7 +186,7 @@ jobs:
         asset_name: 'hluda-server-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm.xz'
         asset_content_type: application/octet-stream
 
-    - name: Upload android arm64 frida-server for strongR-frida
+    - name: Upload android arm64 frida-server for embed-il2cpp-frida
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -196,7 +196,7 @@ jobs:
         asset_name: 'hluda-server-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm64.xz'
         asset_content_type: application/octet-stream
 
-    - name: Upload android x86 frida-server for strongR-frida
+    - name: Upload android x86 frida-server for embed-il2cpp-frida
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -206,7 +206,7 @@ jobs:
         asset_name: 'hluda-server-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-x86.xz'
         asset_content_type: application/octet-stream
 
-    - name: Upload android x86_64 frida-server for strongR-frida
+    - name: Upload android x86_64 frida-server for embed-il2cpp-frida
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -216,7 +216,7 @@ jobs:
         asset_name: 'hluda-server-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-x86_64.xz'
         asset_content_type: application/octet-stream
         
-    - name: Upload android arm frida-inject for strongR-frida
+    - name: Upload android arm frida-inject for embed-il2cpp-frida
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -226,7 +226,7 @@ jobs:
         asset_name: 'hluda-inject-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm.xz'
         asset_content_type: application/octet-stream
         
-    - name: Upload android arm64 frida-inject for strongR-frida
+    - name: Upload android arm64 frida-inject for embed-il2cpp-frida
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -236,7 +236,7 @@ jobs:
         asset_name: 'hluda-inject-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm64.xz'
         asset_content_type: application/octet-stream
         
-    - name: Upload android x86 frida-inject for strongR-frida
+    - name: Upload android x86 frida-inject for embed-il2cpp-frida
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -246,7 +246,7 @@ jobs:
         asset_name: 'hluda-inject-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-x86.xz'
         asset_content_type: application/octet-stream
         
-    - name: Upload android x86_64 frida-inject for strongR-frida
+    - name: Upload android x86_64 frida-inject for embed-il2cpp-frida
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -256,7 +256,7 @@ jobs:
         asset_name: 'hluda-inject-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm-x86_64.xz'
         asset_content_type: application/octet-stream
     
-    - name: Upload android arm frida-gadget for strongR-frida
+    - name: Upload android arm frida-gadget for embed-il2cpp-frida
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -266,7 +266,7 @@ jobs:
         asset_name: 'hluda-gadget-${{ needs.check_version.outputs.FRIDA_VERSION }}-android-arm.so.xz'
         asset_content_type: application/octet-stream
 
-    - name: Upload android arm64 frida-gadget for strongR-frida
+    - name: Upload android arm64 frida-gadget for embed-il2cpp-frida
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

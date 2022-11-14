@@ -1,0 +1,24 @@
+diff --git a/config.mk b/config.mk
+index 7c300a7..3e55d51 100644
+--- a/config.mk
++++ b/config.mk
+@@ -8,6 +8,7 @@ FRIDA_V8 ?= auto
+ FRIDA_CONNECTIVITY ?= enabled
+ FRIDA_DATABASE ?= enabled
+ FRIDA_JAVA_BRIDGE ?= auto
++FRIDA_IL2CPP_BRIDGE ?= auto
+ FRIDA_OBJC_BRIDGE ?= auto
+ FRIDA_SWIFT_BRIDGE ?= auto
+ 
+diff --git a/releng/frida.mk b/releng/frida.mk
+index 1f7dfd9..dd6e285 100644
+--- a/releng/frida.mk
++++ b/releng/frida.mk
+@@ -16,6 +16,7 @@ frida_gum_flags := \
+ 	-Dfrida_objc_bridge=$(FRIDA_OBJC_BRIDGE) \
+ 	-Dfrida_swift_bridge=$(FRIDA_SWIFT_BRIDGE) \
+ 	-Dfrida_java_bridge=$(FRIDA_JAVA_BRIDGE) \
++	-Dfrida_il2cpp_bridge=$(FRIDA_IL2CPP_BRIDGE) \
+ 	-Dtests=enabled \
+ 	$(NULL)
+ frida_core_flags := \
