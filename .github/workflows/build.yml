@@ -76,7 +76,7 @@ jobs:
           prerelease: false
 
   android_build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: [check_version, create_release]
 
     steps:
@@ -100,16 +100,14 @@ jobs:
       with:
         ndk-version: r25b
 
-    - name: Set up Python 3.8
+    - name: Set up Python 3.10
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8
+        python-version: 3.10
 
     - name: install dependencies
       run: |
-        sudo apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get install build-essential tree ninja-build gcc-multilib g++-multilib lib32stdc++-9-dev flex bison xz-utils ruby ruby-dev python3-requests python3-setuptools python3-dev python3-pip libc6-dev libc6-dev-i386 -y
-        sudo gem install fpm -v 1.11.0 --no-document
-        python3 -m pip install lief
+        sudo apt-get install build-essential curl git lib32stdc++-9-dev libc6-dev-i386 nodejs npm python3-dev python3-pip
 
     - name: build frida for Android
       shell: bash
