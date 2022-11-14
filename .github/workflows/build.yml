@@ -116,14 +116,12 @@ jobs:
       run: |
         git config --global user.name "${{ secrets.GIT_NAME }}"
         git config --global user.email "${{ secrets.GIT_EMAIL }}"
-        git clone ${{ secrets.PATCH_REPO }}
         export ANDROID_NDK_ROOT=${{ steps.setup-ndk.outputs.ndk-path }}
         git clone --recurse-submodules https://github.com/frida/frida
         cd frida
-        ls ../
-        git apply ../embed_il2cpp_frida/Patches/main.patch
+        git apply ../Patches/main.patch
         cd frida-gum
-        git apply ../../embed_il2cpp_frida/Patches/frida-gum.patch
+        git apply ../../Patches/frida-gum.patch
         cd ..
         make core-android-arm
         make core-android-arm64
