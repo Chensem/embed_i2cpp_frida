@@ -42,7 +42,7 @@ index 75951b2f..4aa8beea 100755
          objc = v8_tmp_dir / "objc.js"
          swift = v8_tmp_dir / "swift.js"
          java = v8_tmp_dir / "java.js"
-+        il2cpp = quick_tmp_dir / "il2cpp.js"
++        il2cpp = v8_tmp_dir / "il2cpp.js"
 +
  
          v8_options = [
