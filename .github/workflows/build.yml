@@ -120,6 +120,8 @@ jobs:
         git apply ../Patches/main.patch
         cd frida-gum
         git apply ../../Patches/frida-gum.patch
+        touch bindings/gumjs/runtime/il2cpp.js
+        echo "Frida._il2cpp = require('frida-il2cpp-bridge');" > bindings/gumjs/runtime/il2cpp.js
         cd ..
         make core-android-arm
         make core-android-arm64
