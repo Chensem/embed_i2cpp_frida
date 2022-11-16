@@ -1,5 +1,5 @@
 diff --git a/bindings/gumjs/generate-runtime.py b/bindings/gumjs/generate-runtime.py
-index 75951b2f..4aa8beea 100755
+index 75951b2f..2df61037 100755
 --- a/bindings/gumjs/generate-runtime.py
 +++ b/bindings/gumjs/generate-runtime.py
 @@ -18,7 +18,8 @@ RELAXED_DEPS = {
@@ -129,7 +129,7 @@ index 8e1fe980..eb46ea25 100644
    }
  
 diff --git a/bindings/gumjs/gumv8core.cpp b/bindings/gumjs/gumv8core.cpp
-index f0568d10..4f2de8b9 100644
+index 1c9d3f44..a898acc1 100644
 --- a/bindings/gumjs/gumv8core.cpp
 +++ b/bindings/gumjs/gumv8core.cpp
 @@ -25,6 +25,10 @@
@@ -141,9 +141,9 @@ index f0568d10..4f2de8b9 100644
 +#endif
 +
  
+ #include <glib/gprintf.h>
  #ifdef _MSC_VER
- # include <intrin.h>
-@@ -190,6 +194,7 @@ GUMJS_DECLARE_GETTER (gumjs_frida_get_heap_size)
+@@ -191,6 +195,7 @@ GUMJS_DECLARE_GETTER (gumjs_frida_get_heap_size)
  GUMJS_DECLARE_FUNCTION (gumjs_frida_objc_load)
  GUMJS_DECLARE_FUNCTION (gumjs_frida_swift_load)
  GUMJS_DECLARE_FUNCTION (gumjs_frida_java_load)
@@ -151,7 +151,7 @@ index f0568d10..4f2de8b9 100644
  
  GUMJS_DECLARE_FUNCTION (gumjs_script_evaluate)
  GUMJS_DECLARE_FUNCTION (gumjs_script_load)
-@@ -388,6 +393,8 @@ static const GumV8Function gumjs_frida_functions[] =
+@@ -389,6 +394,8 @@ static const GumV8Function gumjs_frida_functions[] =
    { "_loadObjC", gumjs_frida_objc_load },
    { "_loadSwift", gumjs_frida_swift_load },
    { "_loadJava", gumjs_frida_java_load },
@@ -160,7 +160,7 @@ index f0568d10..4f2de8b9 100644
  
    { NULL, NULL }
  };
-@@ -1680,6 +1687,21 @@ GUMJS_DEFINE_FUNCTION (gumjs_frida_java_load)
+@@ -1681,6 +1688,21 @@ GUMJS_DEFINE_FUNCTION (gumjs_frida_java_load)
    info.GetReturnValue ().Set (loaded);
  }
  
@@ -182,7 +182,7 @@ index f0568d10..4f2de8b9 100644
  GUMJS_DEFINE_FUNCTION (gumjs_script_evaluate)
  {
    gchar * name, * source;
-@@ -1814,6 +1836,12 @@ GUMJS_DEFINE_FUNCTION (gumjs_script_find_source_map)
+@@ -1815,6 +1837,12 @@ GUMJS_DEFINE_FUNCTION (gumjs_script_find_source_map)
        {
          json = gumjs_java_source_map;
        }
@@ -195,6 +195,18 @@ index f0568d10..4f2de8b9 100644
  #endif
      }
    }
+diff --git a/bindings/gumjs/meson.build b/bindings/gumjs/meson.build
+index f4d9f85f..c16f9ee5 100644
+--- a/bindings/gumjs/meson.build
++++ b/bindings/gumjs/meson.build
+@@ -258,6 +258,7 @@ gumjs_deps = [
+ 
+ gumjs = library('frida-gumjs-' + api_version, gumjs_sources,
+   c_args: frida_component_cflags,
++  cpp_args: ['-funsigned-char'],
+   override_options: [
+     'cpp_std=c++17',
+     'cpp_eh=none',
 diff --git a/bindings/gumjs/runtime/core.js b/bindings/gumjs/runtime/core.js
 index cdabc715..e03a40db 100644
 --- a/bindings/gumjs/runtime/core.js
@@ -208,18 +220,22 @@ index cdabc715..e03a40db 100644
  function makeStubBridge() {
    return Object.freeze({ available: false });
  }
-diff --git a/bindings/gumjs/runtime/il2cpp.js b/bindings/gumjs/runtime/il2cpp.js
-new file mode 100644
-index 00000000..3821d2b5
---- /dev/null
-+++ b/bindings/gumjs/runtime/il2cpp.js
-@@ -0,0 +1 @@
-+Frida._il2cpp = require('frida-il2cpp-bridge');
 diff --git a/meson.build b/meson.build
-index d4db4786..4b7c137b 100644
+index 43ba4ff3..4f6c02fb 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -572,6 +572,10 @@ if have_gumjs
+@@ -48,7 +48,9 @@ endif
+ 
+ cc = meson.get_compiler('c')
+ 
+-frida_component_cflags = []
++frida_component_cflags = [
++  '-funsigned-char'
++]
+ ndebug = get_option('b_ndebug')
+ optimize_for_prod = ndebug == 'true' or (ndebug == 'if-release' and not get_option('debug'))
+ if optimize_for_prod
+@@ -572,6 +574,10 @@ if have_gumjs
      cdata.set('HAVE_JAVA_BRIDGE', 1)
    endif
  
@@ -227,9 +243,23 @@ index d4db4786..4b7c137b 100644
 +    cdata.set('HAVE_IL2CPP_BRIDGE', 1)
 +  endif
 +
-   libsoup_dep = dependency('libsoup-2.4', default_options: [
+   libsoup_dep = dependency('libsoup-3.0', default_options: [
      'gssapi=disabled',
      'ntlm=disabled',
+@@ -644,6 +650,7 @@ install_header_subdir = install_header_basedir + '/gum'
+ 
+ subdir('ext')
+ subdir('gum')
++
+ if not diet
+   subdir('libs')
+   subdir('bindings')
+@@ -656,3 +663,5 @@ endif
+ if build_tests
+   subdir('tests')
+ endif
++
++
 diff --git a/meson_options.txt b/meson_options.txt
 index 30cfb599..e45ce0a2 100644
 --- a/meson_options.txt
